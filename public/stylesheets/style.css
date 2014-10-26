@@ -1,0 +1,342 @@
+/* Eric Meyer's CSS Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+    background-image: url(http://storage5.static.itmages.ru/i/14/0928/h_1411940665_4390152_e0489c42c7.png);
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/* End of Eric Meyer's CSS Reset */
+
+html {
+    height: 100%;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+    display: block;
+}
+body {
+    font: 12px/18px Arial, sans-serif;
+    width: 100%;
+    height: 100%;
+}
+.wrapper {
+    width: 1000px;
+    margin: 0 auto;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    box-shadow: 1 0 0 5px rgb(22,22,22);
+}
+
+
+/* Header
+-----------------------------------------------------------------------------*/
+.header {
+    position: fixed;
+    background: rgb(22,141,226);
+    width: 1000px;
+    height: 70px;
+    z-index: 1;
+}
+
+h1{
+    color: white;
+    font-family: Lato, Calibri, Arial, sans-serif;
+    font-size: 48px;
+    float:left;
+    padding: 20px;
+    text-shadow: 1px 1px 4px rgba(34,34,34,0.6);
+}
+a{
+    color:rgb(22,141,226);
+    text-decoration: none;
+}
+#exit, #update{
+    color: white;
+    float:right;
+    padding: 10px;
+}
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.middle {
+    position: relative;
+}
+.middle:after {
+    display: table;
+    clear: both;
+    content: '';
+}
+.container {
+    width: 100%;
+    float: left;
+    overflow: hidden;
+}
+
+.content{
+    padding: 70px 0 0 0;
+}
+
+.directory-link, .directory-on{
+    font-family: Lato, Calibri, Arial, sans-serif;
+    color: white;
+    font-size: 16px;
+    background: rgb(108, 178, 228);
+    padding: 10px;
+    margin-bottom: 1px;
+    cursor: pointer;
+}
+
+.directory-on, .directory-link:hover{
+    background: white;
+    color: rgb(22,141,226);
+}
+
+
+#left {
+    background: rgb(131, 188, 228);
+    float: left;
+    width: 250px;
+    min-height: 100%;
+}
+
+.nav_ul{
+    display:inline;
+}
+
+.li_nav{
+    list-style-type: none;
+    display: inline; /* Отображать как строчный элемент */
+    cursor: pointer;
+    margin-left: 5px; /* Отступ слева */
+    padding: 3px; /* Поля вокруг текста */
+    background:rgb(236, 236, 236);
+    color: rgb(22,141,226);
+    float:left;
+    padding: 10px;
+}
+
+.li_nav:hover{
+    background: rgb(108, 178, 228);
+    color: white;
+}
+
+.update-dir{
+    margin-right: 5px; /* Отступ слева */
+    padding: 3px; /* Поля вокруг текста */
+    cursor: pointer;
+    background:rgb(236, 236, 236);
+    color: rgb(22,141,226);
+    float: right;
+    padding: 10px;
+}
+
+.update-dir:hover{
+    background: rgb(108, 178, 228);
+    color: white;
+}
+
+/* Right Sidebar
+-----------------------------------------------------------------------------*/
+#right {
+    width: 100%;
+    background: white;
+    min-height: 100%;
+}
+
+.directory {
+    padding-top: 55px;
+    margin-left: 250px;
+}
+
+.directory .catalog{
+    float: left;
+    margin-left: 25px;
+    margin-bottom: 25px;
+    height: 120px;
+    width: 120px;
+    text-align:center;
+    background: rgb(131, 188, 208);
+    color: white;
+    cursor: pointer;
+}
+
+.directory .catalog:hover{
+    background: rgb(108, 178, 208);
+}
+
+.directory .algorithms{
+    float: left;
+    margin-left: 25px;
+    margin-bottom: 25px;
+    height: 120px;
+    width: 120px;
+    text-align:center;
+    background: rgb(131, 188, 228);
+    color: white;
+    cursor: pointer;
+}
+
+.directory .algorithms:hover{
+    background: rgb(108, 178, 228);
+}
+
+/* Базовые стили затемнения и модального окна */
+
+.modalbg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* Цвет фона затемнения */
+    background: rgba(0, 0, 0, 0);
+    z-index: 99999;
+    /* Устанавливаем эффект перехода */
+    -moz-transition: all 2s ease-out;
+    -webkit-transition: all 2s ease-out;
+    -o-transition: all 2s ease-out;
+    transition: all 2s ease-out;
+    -webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    -o-transition-delay: 0.2s;
+    -transition-delay: 0.2s;
+    display: block;
+    pointer-events: none;
+}
+/* Формируем блок с содержанием */
+.modalbg .dialog {
+    max-width: 400px;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    top: -1000px;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    /* Скругляем угы */
+    border-radius: 10px;
+    background: #fefefe;
+    /* Добавляем тени */
+    box-shadow: 0 0 10px #000000;
+    -moz-box-shadow: 0 0 10px #000000;
+    -webkit-box-shadow: 0 0 10px #000000;
+}
+.modalbg:target {
+    display: block;
+    pointer-events: auto;
+    background: rgba(4, 10, 30, 0.8);
+    /* Устанавливаем эффект перехода */
+    -moz-transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+}
+.modalbg:target .dialog {
+    top: 50px;
+    -moz-transition: all 0.8s ease-out;
+    -webkit-transition: all 0.8s ease-out;
+    -o-transition: all 0.8s ease-out;
+    transition: all 0.8s ease-out;
+    -webkit-transition-delay: 0.4s;
+    -moz-transition-delay: 0.4s;
+    -o-transition-delay: 0.4s;
+    -transition-delay: 0.4s;
+}
+/*** Кнопка закрытия ***/
+.close {
+    background-color: rgba(61, 61, 61, 0.8);
+    border: 2px solid #ccc;
+    color: #FFFFFF;
+    line-height: 20px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 20px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #000000;
+    -moz-box-shadow: 0 0 10px #000000;
+    -webkit-box-shadow: 0 0 10px #000000;
+    -moz-transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+    -webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    -o-transition-delay: 0.2s;
+    -transition-delay: 0.2s;
+}
+.close:hover {
+    background-color: rgba(252, 20, 0, 0.8);
+    -moz-transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+}
+.fineprint {
+    font-style: italic;
+    font-size: 12px;
+    color: #646;
+}
+.dialog p a {
+    color: green;
+    text-decoration: none;
+}
+
+/* Footer
+-----------------------------------------------------------------------------*/
+.footer {
+    width: 1000px;
+    margin: -35px auto 0;
+    height: 35px;
+    background: rgb(22,141,226);
+    position: fixed;
+    bottom:0;
+    margin: auto;
+}
+
+
+

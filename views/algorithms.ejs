@@ -1,0 +1,167 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <title><%= title %></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script>
+        function test_catalog( id ){
+            alert("Test catalog "+id);
+        }
+
+        function test_alg( id ){
+            alert("Test alg "+id);
+        }
+
+        function get_directory(id_directory) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/get_catalog", true);
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState != 4) return;
+                clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+                if (xhr.status == 200) {// Все ок
+                    var arrayCatalog = JSON.parse(xhr.responseText).data_catalog;
+                    var arrayAlgorithms = JSON.parse(xhr.responseText).data_algorithms;
+
+                    var list = document.getElementById('catalog');
+                    list.innerHTML = "";
+                    for (var i=0; i<arrayCatalog.length; i++){
+                        var container = document.createElement('div');
+                        container.setAttribute('onclick', 'test_catalog('+arrayCatalog[i].id+')');
+                        container.className = "catalog";
+                        container.innerHTML = '<span>'+arrayCatalog[i].name+'</span>';
+                        list.appendChild(container);
+                    }
+
+                    for (var i=0; i<arrayAlgorithms.length; i++){
+                        var container = document.createElement('div');
+                        container.setAttribute('onclick', 'test_alg('+arrayAlgorithms[i].id+')');
+                        container.className = "algorithms";
+                        container.innerHTML = '<span>'+arrayAlgorithms[i].name+'</span>';
+                        list.appendChild(container);
+                    }
+                } else {
+                    handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+                }
+            };
+            xhr.send(JSON.stringify({id_directory: id_directory}));
+            var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+            function handleError(message) {
+                alert("Ошибка: "+message);
+            }
+        }
+        function get_list_directory() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/get_list_catalog", true);
+            xhr.onreadystatechange=function(){
+                if (xhr.readyState != 4) return;
+                clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+                if (xhr.status == 200) {// Все ок
+                    alert(xhr.responseText);
+                } else {
+                    handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+                }
+            };
+            xhr.send(JSON.stringify({}));
+            var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+            function handleError(message) {
+                alert("Ошибка: "+message);
+            }
+        }
+
+        function test(elm, num){
+            get_directory(num);
+            clear();
+            elm.className = "directory-on";
+        }
+
+        function clear(){
+            var array = document.getElementById('list_catalog').getElementsByTagName('div');
+            for (var i=0; i<array.length; i++){
+                array[i].className = "directory-link";
+            }
+        }
+
+        function win1(){
+            document.location.href = "#win1";
+        }
+        function win2(){
+            document.location.href = "#win2";
+        }
+        function win3(){
+            document.location.href = "#win3";
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="wrapper">
+    <header class="header">
+        <h1>Архив алгоритмов</h1>
+        <a id='exit' href="index">Выход</a>
+    </header><!-- .header-->
+    <div class="middle">
+        <div id="left">
+            <div class="content" id="list_catalog">
+                <a id='update' href="#" onclick="get_list_directory()">Обновить</a>
+                <br><br>
+                <div onclick="test(this, 0)" class="directory-link">
+                    <span>Root</span>
+                </div>
+                <div onclick="test(this, 1)" class="directory-link">
+                    <span>Root test</span>
+                </div>
+                <div onclick="test(this, 2)" class="directory-link">
+                    <span>test Root</span>
+                </div>
+            </div>
+        </div>
+        <div id="right">
+            <div class="content">
+                <div>
+                    <ul class="nav_ul">
+                        <li class="li_nav" onclick="win1()"><span>Создать алгоритм</span></li>
+                        <li class="li_nav" onclick="win2()"><span>Создать каталог</span></li>
+                        <li class="li_nav" onclick="win3()"><span>Права доступа к каталогу</span></li>
+                    </ul>
+                    <div class="update-dir" onclick="get_directory(0)"><span>Обновить</span></div>
+                </div>
+                <div id="catalog" class="directory">
+
+                </div>
+            </div>
+        </div>
+
+    </div><!-- .middle-->
+
+    <footer class="footer">
+        <strong>Footer</strong>
+    </footer><!-- .footer -->
+
+</div><!-- .wrapper -->
+
+<div id="win1" class="modalbg">
+    <div class="dialog">
+        <a href="#close" title="Закрыть" class="close">X</a>
+        <h3>Создание алгоритма</h3>
+    </div>
+</div>
+<div id="win2" class="modalbg">
+    <div class="dialog">
+        <a href="#close" title="Закрыть" class="close">X</a>
+        <h3>Создание каталога</h3>
+    </div>
+</div>
+<div id="win3" class="modalbg">
+    <div class="dialog">
+        <a href="#close" title="Закрыть" class="close">X</a>
+        <h3>Настройка прав доступа к каталогу</h3>
+    </div>
+</div>
+
+</body>
+</html>
