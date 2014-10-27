@@ -6,14 +6,6 @@ var checkAuth = require('../middleware/checkAuth');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res) {
-    if (req.session.user) {
-        res.render('algorithms', { title: 'Алгоритмы' });
-    }else {
-        res.render('index');
-    }
-});
-
 router.get('/registration', function(req, res) {
     if (req.session.user) {
         res.render('algorithms', { title: 'Алгоритмы' });
@@ -22,9 +14,24 @@ router.get('/registration', function(req, res) {
     }
 });
 
-router.get('/authorization', function(req, res) {
+/*router.get('/authorization', function(req, res) {
     res.render('index');
+});*/
+
+router.get('/', function(req, res) {
+    if (req.session.user) {
+        res.render('algorithms', { title: 'Алгоритмы' });
+    }else {
+        res.render('index');
+    }
 });
+
+router.get('/logout', function(req,res){
+   req.session.destroy();
+   res.render('index');
+});
+
+
 
 router.get('/algorithms',checkAuth, function(req, res) {
     res.render('algorithms', { title: 'Алгоритмы' });

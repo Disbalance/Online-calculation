@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var app = module.exports = express()
+var app = module.exports = express();
 
 var session = require('express-session');
 var SessionStore = require('express-mysql-session');
