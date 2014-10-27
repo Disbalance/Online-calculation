@@ -148,28 +148,40 @@
     <div class="dialog">
         <a href="#close" title="Закрыть" class="close">X</a>
         <h3>Создание алгоритма</h3>
-        <span>Введите имя алгоритма:</span>
-        <br>
-        <input name="nameAlghoritm" id = "nameAlghoritm" type="text"  class="input name" value="Введите имя алгоритма" onfocus="this.value=''" />
-        <br>
-        <span>Введите алгоритм:</span>
-        <br>
-        <textarea type = "text" id="textAlghoritm" class="input name" placeholder="Введите текст алгоритма" onfocus="this.value=''"></textarea>
+        <div class="model_algorithms">
+            <span>Введите имя алгоритма:</span>
+            <input id = "nameAlghoritm" type="text"  class="input name"/>
+            <a href="#">Принять</a>
+        </div>
     </div>
 </div>
 <div id="win2" class="modalbg">
     <div class="dialog">
         <a href="#close" title="Закрыть" class="close">X</a>
         <h3>Создание каталога</h3>
-        <span>Введите имя каталога:</span>
-        <br>
-        <input name="nameCatalog" id = "nameCatalog" type="text"  class="input name" value="Введите имя каталога" onfocus="this.value=''" />
+        <div class="model_algorithms">
+            <span>Введите имя каталога:</span>
+            <input id = "nameCatalog" type="text"  class="input name"/>
+            <a href="#">Принять</a>
+        </div>
     </div>
 </div>
 <div id="win3" class="modalbg">
     <div class="dialog">
         <a href="#close" title="Закрыть" class="close">X</a>
         <h3>Настройка прав доступа к каталогу</h3>
+        <div class="model_algorithms">
+            <input id = "nameUser" type="text" style="width: 299px" placeholder="Введите имя пользователя"/>
+            <span class="add_user">+</span>
+            <ul class="ul_list_user">
+                <li class="li_list_user"><span>User 1</span><span class="del_user">x</span></li>
+                <li class="li_list_user"><span>User 2</span><span class="del_user">x</span></li>
+                <li class="li_list_user"><span>User 3</span><span class="del_user">x</span></li>
+                <li class="li_list_user"><span>User 4</span><span class="del_user">x</span></li>
+                <li class="li_list_user"><span>User 5</span><span class="del_user">x</span></li>
+            </ul>
+            <a href="#" style="margin: 0">Принять</a>
+        </div>
     </div>
 </div>
 
