@@ -41,14 +41,12 @@ function check_password(password, password_repeat){
     else return 0;
 }
 
-function withoutCyr(input) {
-    var value = input.value;
-    var re = /а|б|в|г|д|е|ё|ж|з|и|ё|к|л|м|н|о|п|р|с|т|у|ф|х|ц|ч|ш|щ|ъ|ы|ь|э|ю|я/gi;
-    if (re.test(value)) {
-        value = value.replace(re, '');
-        input.value = value;
-    }
-}
+function withoutCyr(obj) {
+    if (/^[a-zA-Z0-9 ,.\-:"()]*?$/.test(obj.value))
+        obj.defaultValue = obj.value;
+    else
+        obj.value = obj.defaultValue;
+};
 
 function authorization(){
     var xhr = new XMLHttpRequest();

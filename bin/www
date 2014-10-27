@@ -2,7 +2,7 @@
 var debug = require('debug')('online-calculation');
 var app = require('../app');
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', 3333);
 
 var mysql = require('../lib/database/databaseUser').createConnection();
 

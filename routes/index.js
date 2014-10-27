@@ -3,6 +3,7 @@ var events = require('events');
 var catalog = require('../lib/database/catalog');
 var databaseUser = require('../lib/database/databaseUser');
 var checkAuth = require('../middleware/checkAuth');
+var crypto = require('crypto');
 var router = express.Router();
 
 /* GET home page. */
@@ -31,7 +32,7 @@ router.post('/registration', function(req, res, next) {
     })
         .on('end', function(){
             body = JSON.parse(body);
-            var user = {login: body.login, password: body.password};
+            var user = {login: body.login, password: crypto.createHash('md5').update(body.password).digest('hex')};
             console.log(user);
             var eventAddUser = new events.EventEmitter();
             eventAddUser.on("add", function(){
@@ -55,7 +56,7 @@ router.post('/authorization', function(req,res,next) {
     })
         .on('end', function () {
             body = JSON.parse(body);
-            var user = {login: body.login, password: body.password};
+            var user = {login: body.login, password: crypto.createHash('md5').update(body.password).digest('hex')};
             console.log(user);
             var eventLoginUser = new events.EventEmitter();
             eventLoginUser.on("ok", function(){
