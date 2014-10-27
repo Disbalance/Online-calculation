@@ -8,7 +8,32 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var app = express();
+var app = module.exports = express()
+
+var session = require('express-session');
+var SessionStore = require('express-mysql-session');
+
+var options = {
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: '00291256',
+    database: 'test'
+
+};
+
+app.use(session({
+    key: 'session_cookie_name',
+    secret: 'session_cookie_secret',
+    cookie: {
+           path:"/",
+           httpOnly:true,
+           maxAge: 1000*24*24*60*60
+      },
+    store: new SessionStore(options),
+    resave: true,
+    saveUninitialized: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -2,26 +2,31 @@ var express = require('express');
 var events = require('events');
 var catalog = require('../lib/database/catalog');
 var databaseUser = require('../lib/database/databaseUser');
+var checkAuth = require('../middleware/checkAuth');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index');
+    if (req.session.user) {
+        res.render('algorithms', { title: 'Алгоритмы' });
+    }else {
+        res.render('index');
+    }
 });
 
 router.get('/registration', function(req, res) {
-    res.render('registration');
+    if (req.session.user) {
+        res.render('algorithms', { title: 'Алгоритмы' });
+    }else {
+        res.render('registration');
+    }
 });
 
 router.get('/authorization', function(req, res) {
     res.render('index');
 });
 
-router.get('/index', function(req, res) {
-    res.render('index');
-});
-
-router.get('/algorithms', function(req, res) {
+router.get('/algorithms',checkAuth, function(req, res) {
     res.render('algorithms', { title: 'Алгоритмы' });
 });
 
@@ -94,6 +99,7 @@ router.post('/registration', function(req, res, next) {
             console.log(user);
             var eventAddUser = new events.EventEmitter();
             eventAddUser.on("add", function(){
+                req.session.user = user.login;
                 res.statusCode = 200;
                 res.end("ok");
             });
@@ -117,6 +123,7 @@ router.post('/authorization', function(req,res,next) {
             console.log(user);
             var eventLoginUser = new events.EventEmitter();
             eventLoginUser.on("ok", function(){
+                req.session.user = user.login;
                 res.statusCode = 200;
                 res.end("ok");
             });
