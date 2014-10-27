@@ -6,6 +6,8 @@ var checkAuth = require('../middleware/checkAuth');
 var router = express.Router();
 
 /* GET home page. */
+
+
 router.get('/registration', function(req, res) {
     if (req.session.user) {
         res.render('algorithms', { title: 'Алгоритмы' });
@@ -14,16 +16,67 @@ router.get('/registration', function(req, res) {
     }
 });
 
-/*router.get('/authorization', function(req, res) {
-    res.render('index');
-});*/
-
 router.get('/', function(req, res) {
     if (req.session.user) {
         res.render('algorithms', { title: 'Алгоритмы' });
     }else {
         res.render('index');
     }
+});
+
+router.post('/registration', function(req, res, next) {
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+            body = JSON.parse(body);
+            var user = {login: body.login, password: body.password};
+            console.log(user);
+            var eventAddUser = new events.EventEmitter();
+            eventAddUser.on("add", function(){
+                req.session.user = user.login;
+                res.statusCode = 200;
+                res.end("ok");
+            });
+            eventAddUser.on("error", function(){
+                res.statusCode = 406;
+                res.end("ok");
+            });
+            databaseUser.add_user(user, eventAddUser);
+
+        })
+});
+
+router.post('/authorization', function(req,res,next) {
+    var body = '';
+    req.on('readable', function () {
+        body += req.read();
+    })
+        .on('end', function () {
+            body = JSON.parse(body);
+            var user = {login: body.login, password: body.password};
+            console.log(user);
+            var eventLoginUser = new events.EventEmitter();
+            eventLoginUser.on("ok", function(){
+                req.session.user = user.login;
+                res.statusCode = 200;
+                res.end("ok");
+            });
+            eventLoginUser.on("error",function(){
+                res.statusCode = 405;
+                res.end("ok");
+            });
+            databaseUser.login_user(user,eventLoginUser);
+        });
+});
+
+router.use(function(req, res, next){
+    if (req.session.user){
+        next();
+    }else{
+        res.statusCode = 200;
+    }   res.end("error");
 });
 
 router.get('/logout', function(req,res){
@@ -94,51 +147,5 @@ router.post('/get_list_catalog', function(req, res, next) {
                 next(err);
             }
         })
-});
-router.post('/registration', function(req, res, next) {
-    var body = '';
-    req.on('readable', function(){
-        body += req.read();
-    })
-        .on('end', function(){
-            body = JSON.parse(body);
-            var user = {login: body.login, password: body.password};
-            console.log(user);
-            var eventAddUser = new events.EventEmitter();
-            eventAddUser.on("add", function(){
-                req.session.user = user.login;
-                res.statusCode = 200;
-                res.end("ok");
-            });
-            eventAddUser.on("error", function(){
-                res.statusCode = 406;
-                res.end("ok");
-            });
-            databaseUser.add_user(user, eventAddUser);
-
-        })
-});
-
-router.post('/authorization', function(req,res,next) {
-    var body = '';
-    req.on('readable', function () {
-        body += req.read();
-    })
-        .on('end', function () {
-            body = JSON.parse(body);
-            var user = {login: body.login, password: body.password};
-            console.log(user);
-            var eventLoginUser = new events.EventEmitter();
-            eventLoginUser.on("ok", function(){
-                req.session.user = user.login;
-                res.statusCode = 200;
-                res.end("ok");
-            });
-            eventLoginUser.on("error",function(){
-                res.statusCode = 405;
-                res.end("ok");
-            });
-            databaseUser.login_user(user,eventLoginUser);
-        });
 });
 module.exports = router;
