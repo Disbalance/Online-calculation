@@ -150,7 +150,7 @@ router.post('/get_list_catalog', function(req, res, next) {
         })
 });
 
-router.post('/addNameAlghoritm', function(req,res,next) {
+router.post('/addAlghoritm', function(req,res,next) {
     var body = '';
     req.on('readable', function () {
         body += req.read();
@@ -172,25 +172,25 @@ router.post('/addNameAlghoritm', function(req,res,next) {
         });
 });
 
-router.post('/addNameCatalog', function(req,res,next) {
+router.post('/addCatalog', function(req,res,next) {
     var body = '';
     req.on('readable', function () {
         body += req.read();
     })
         .on('end', function () {
             body = JSON.parse(body);
-            var name = {name:body.nameCatalog};
-            console.log(name);
-            var eventLoginUser = new events.EventEmitter();
-            eventLoginUser.on("ok", function(){
+            var data = {name:body.nameCatalog, id_pred:body.id_pred};
+            console.log(data);
+            var eventAddCatalog = new events.EventEmitter();
+            eventAddCatalog.on("add", function(){
                 res.statusCode = 200;
                 res.end("ok");
             });
-            eventLoginUser.on("error",function(){
+            eventAddCatalog.on("error",function(){
                 res.statusCode = 405;
                 res.end("ok");
             });
-            //добавление в базу данных;
+            databaseUser.addCatalog(data, eventAddCatalog);
         });
 });
 
