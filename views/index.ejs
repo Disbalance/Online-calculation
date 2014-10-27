@@ -22,8 +22,8 @@
         </div>
 
         <div class="content">
-            <input name="username" id = "login" type="text" class="input username" value="Логин" onfocus="this.value=''" />
-            <input name="password" id = "password" type="password" class="input password" value="Пароль" onfocus="this.value=''" />
+            <input name="username" id = "login" type="text"  onkeyup="return withoutCyr(this)" class="input username" value="Логин" onfocus="this.value=''" />
+            <input name="password" id = "password" type="password"  onkeyup="return withoutCyr(this)" class="input password" value="Пароль" onfocus="this.value=''" />
         </div>
 
         <div class="footer">

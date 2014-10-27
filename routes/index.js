@@ -71,13 +71,13 @@ router.post('/authorization', function(req,res,next) {
         });
 });
 
-router.use(function(req, res, next){
+/*router.use(function(req, res, next){
     if (req.session.user){
         next();
     }else{
         res.statusCode = 200;
-    }   res.end("error");
-});
+    }   res.end('error');
+}); */
 
 router.get('/logout', function(req,res){
    req.session.destroy();
