@@ -36,11 +36,13 @@ router.post('/registration', function(req, res, next) {
             console.log(user);
             var eventAddUser = new events.EventEmitter();
             eventAddUser.on("add", function(id_user){
+                console.log('Пользователь'+' '+user.login+' '+'добавлен в базу данных и авторизован');
                 req.session.id_user = id_user;
                 res.statusCode = 200;
                 res.end("ok");
             });
             eventAddUser.on("error", function(){
+                console.log('Пользователь'+' '+user.login+' '+'не добавлен в базу данных из-за ошибки');
                 res.statusCode = 406;
                 res.end("ok");
             });
@@ -59,11 +61,13 @@ router.post('/authorization', function(req,res,next) {
             var user = {login: body.login, password: crypto.createHash('md5').update(body.password).digest('hex')};
             var eventLoginUser = new events.EventEmitter();
             eventLoginUser.on("ok", function(id_user){
+                console.log('Пользователь'+' '+user.login+' '+'успешно авторизован');
                 req.session.id_user = id_user;
                 res.statusCode = 200;
                 res.end("ok");
             });
             eventLoginUser.on("error",function(){
+                console.log('Пользователь'+' '+user.login+' '+'- ошибка при авторизации');
                 res.statusCode = 405;
                 res.end("ok");
             });
@@ -80,6 +84,7 @@ router.post('/authorization', function(req,res,next) {
 }); */
 
 router.get('/logout', function(req,res){
+    console.log('Пользователь вышел');
    req.session.destroy();
    res.render('index');
 });
@@ -101,10 +106,12 @@ router.post('/get_catalog', function(req, res, next) {
                 console.log(body);
                 var eventGetCatalog = new events.EventEmitter();
                 eventGetCatalog.on( "ok", function( arrayCatalog, arrayAlgorithms ){
+                    console.log('Каталог успешно отправлен клиенту');
                     res.statusCode = 200;
                     res.end( JSON.stringify({data_catalog: arrayCatalog, data_algorithms: arrayAlgorithms}) );
                 });
                 eventGetCatalog.on( "error", function(){
+                    console.log('Каталог не отправлен клиенту из-за ошибки');
                     res.statusCode = 200;
                     res.end("error_catalog");
                 });
@@ -131,10 +138,12 @@ router.post('/get_list_catalog', function(req, res, next) {
 
                 var eventGetListCatalog = new events.EventEmitter();
                 eventGetListCatalog.on("ok", function(){
+                    console.log('Список каталогов успешно отправлен клиенту');
                     res.statusCode = 200;
                     res.end("list_catalog");
                 });
                 eventGetListCatalog.on("error", function(){
+                    console.log('Список каталогов не отправлен клиенту из-за ошибки');
                     res.statusCode = 200;
                     res.end("error_list_catalog");
                 });
@@ -160,10 +169,12 @@ router.post('/addAlghoritm', function(req,res,next) {
             console.log(name);
             var eventLoginUser = new events.EventEmitter();
             eventLoginUser.on("ok", function(){
+                console.log('Алгоритм'+' '+data.name+' '+' успешно добавлен в базу данных');
                 res.statusCode = 200;
                 res.end("ok");
             });
             eventLoginUser.on("error",function(){
+                console.log('Алгоритм'+' '+data.name+' '+' не добавлен в базу данных из-за ошибки');
                 res.statusCode = 405;
                 res.end("ok");
             });
@@ -182,10 +193,12 @@ router.post('/addCatalog', function(req,res,next) {
             console.log(data);
             var eventAddCatalog = new events.EventEmitter();
             eventAddCatalog.on("add", function(){
+                console.log('Каталог'+' '+data.name+' '+' успешно добавлен в базу данных');
                 res.statusCode = 200;
                 res.end("ok");
             });
             eventAddCatalog.on("error",function(){
+                console.log('Каталог'+' '+data.name+' '+'не добавлен в базу данных из-за ошибки');
                 res.statusCode = 405;
                 res.end("ok");
             });
