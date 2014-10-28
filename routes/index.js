@@ -10,7 +10,7 @@ var router = express.Router();
 
 
 router.get('/registration', function(req, res) {
-    if (req.session.user) {
+    if (req.session.id_user) {
         res.render('algorithms', { title: 'Алгоритмы' });
     }else {
         res.render('registration');
@@ -18,7 +18,7 @@ router.get('/registration', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-    if (req.session.user) {
+    if (req.session.id_user) {
         res.render('algorithms', { title: 'Алгоритмы' });
     }else {
         res.render('index');
@@ -35,8 +35,8 @@ router.post('/registration', function(req, res, next) {
             var user = {login: body.login, password: crypto.createHash('md5').update(body.password).digest('hex')};
             console.log(user);
             var eventAddUser = new events.EventEmitter();
-            eventAddUser.on("add", function(){
-                req.session.user = user.login;
+            eventAddUser.on("add", function(id_user){
+                req.session.id_user = id_user;
                 res.statusCode = 200;
                 res.end("ok");
             });
@@ -57,10 +57,9 @@ router.post('/authorization', function(req,res,next) {
         .on('end', function () {
             body = JSON.parse(body);
             var user = {login: body.login, password: crypto.createHash('md5').update(body.password).digest('hex')};
-            console.log(user);
             var eventLoginUser = new events.EventEmitter();
-            eventLoginUser.on("ok", function(){
-                req.session.user = user.login;
+            eventLoginUser.on("ok", function(id_user){
+                req.session.id_user = id_user;
                 res.statusCode = 200;
                 res.end("ok");
             });
