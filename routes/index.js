@@ -103,7 +103,6 @@ router.post('/get_catalog', function(req, res, next) {
         .on('end', function(){
             try {
                 body = JSON.parse(body);
-                console.log(body);
                 var eventGetCatalog = new events.EventEmitter();
                 eventGetCatalog.on( "ok", function( arrayCatalog, arrayAlgorithms ){
                     console.log('Каталог успешно отправлен клиенту');
@@ -134,8 +133,6 @@ router.post('/get_list_catalog', function(req, res, next) {
         .on('end', function(){
             try {
                 body = JSON.parse(body);
-                console.log(body);
-
                 var eventGetListCatalog = new events.EventEmitter();
                 eventGetListCatalog.on("ok", function(){
                     console.log('Список каталогов успешно отправлен клиенту');
@@ -166,7 +163,6 @@ router.post('/addAlghoritm', function(req,res,next) {
         .on('end', function () {
             body = JSON.parse(body);
             var name = {name:body.nameAlghoritm};
-            console.log(name);
             var eventLoginUser = new events.EventEmitter();
             eventLoginUser.on("ok", function(){
                 console.log('Алгоритм'+' '+data.name+' '+' успешно добавлен в базу данных');
@@ -190,7 +186,6 @@ router.post('/addCatalog', function(req,res,next) {
         .on('end', function () {
             body = JSON.parse(body);
             var data = {name:body.nameCatalog, id_pred:body.id_pred};
-            console.log(data);
             var eventAddCatalog = new events.EventEmitter();
             eventAddCatalog.on("add", function(){
                 console.log('Каталог'+' '+data.name+' '+' успешно добавлен в базу данных');
@@ -205,5 +200,6 @@ router.post('/addCatalog', function(req,res,next) {
             databaseUser.addCatalog(data, eventAddCatalog);
         });
 });
+
 
 module.exports = router;
