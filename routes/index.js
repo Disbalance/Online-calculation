@@ -1,6 +1,5 @@
 var express = require('express');
 var events = require('events');
-var catalog = require('../lib/database/catalog');
 var databaseUser = require('../lib/database/databaseUser');
 var checkAuth = require('../middleware/checkAuth');
 var crypto = require('crypto');
@@ -114,7 +113,8 @@ router.post('/get_catalog', function(req, res, next) {
                     res.statusCode = 200;
                     res.end("error_catalog");
                 });
-                catalog.get_catalog(body.id_directory, eventGetCatalog);
+                //catalog.get_catalog(body.id_directory, eventGetCatalog);
+                databaseUser.getCatalog(body.id_directory, eventGetCatalog);
 
             } catch (e){
                 var err = new Error('Post Error');
@@ -134,7 +134,7 @@ router.post('/get_list_catalog', function(req, res, next) {
             try {
                 body = JSON.parse(body);
                 var eventGetListCatalog = new events.EventEmitter();
-                eventGetListCatalog.on("ok", function(){
+                eventGetListCatalog.on("ok", function(root,arrayCatalog){
                     console.log('Список каталогов успешно отправлен клиенту');
                     res.statusCode = 200;
                     res.end("list_catalog");
@@ -144,8 +144,7 @@ router.post('/get_list_catalog', function(req, res, next) {
                     res.statusCode = 200;
                     res.end("error_list_catalog");
                 });
-                catalog.get_catalog(300, eventGetListCatalog);
-
+                databaseUser.getListCatalog(req.session.id_user, eventGetListCatalog);
             } catch (e){
                 var err = new Error('Post Error');
                 console.error('Error - Post ');
@@ -162,19 +161,19 @@ router.post('/addAlghoritm', function(req,res,next) {
     })
         .on('end', function () {
             body = JSON.parse(body);
-            var name = {name:body.nameAlghoritm};
-            var eventLoginUser = new events.EventEmitter();
-            eventLoginUser.on("ok", function(){
+            var data = {name:body.nameAlghoritm, id_catalog:body.id_catalog};
+            var eventAddAlghoritm = new events.EventEmitter();
+            eventAddAlghoritm.on("ok", function(){
                 console.log('Алгоритм'+' '+data.name+' '+' успешно добавлен в базу данных');
                 res.statusCode = 200;
                 res.end("ok");
             });
-            eventLoginUser.on("error",function(){
-                console.log('Алгоритм'+' '+data.name+' '+' не добавлен в базу данных из-за ошибки');
+            eventAddAlghoritm.on("error",function(){
+                console.log('Алгоритм'+' '+data.name+' '+'не добавлен в базу данных из-за ошибки');
                 res.statusCode = 405;
                 res.end("ok");
             });
-            //добавление в базу данных;
+            databaseUser.addAlghoritm(data, eventAddAlghoritm);
         });
 });
 
