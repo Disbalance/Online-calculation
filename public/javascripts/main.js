@@ -2,7 +2,7 @@
  * Created by Frostix on 27.10.2014.
  */
 var id_catalog;
-var root;
+var this_catalog;
 
 
 
@@ -54,6 +54,14 @@ function test_alg( id ){
     alert("Test alg "+id);
 }
 
+function check_nav(){
+    if (this_catalog == 'Root') {
+        navication_active();
+    }else{
+        navication_deactive();
+    }
+}
+
 function get_directory(id_directory) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/get_catalog", true);
@@ -64,11 +72,7 @@ function get_directory(id_directory) {
             var arrayCatalog = JSON.parse(xhr.responseText).data_catalog;
             var arrayAlgorithms = JSON.parse(xhr.responseText).data_algorithms;
 
-            if (id_directory == root) {
-                navication_active();
-            }else{
-                navication_deactive();
-            }
+            check_nav();
 
             var list = document.getElementById('catalog');
             list.innerHTML = "";
@@ -110,11 +114,10 @@ function get_list_directory() {
             var arrayCatalog = JSON.parse(xhr.responseText).arrayCatalog;
             var list = document.getElementById('list_catalog');
             list.innerHTML = "<a id='update' href='#' onclick='get_list_directory()'>Обновить</a><br><br>";
-
-            root = id_catalog;
-
+            this_catalog = "Root";
             var container = document.createElement('div');
             container.setAttribute('onclick', 'loadCatalog(this, '+id_catalog+')');
+            container.setAttribute('id', 'Root');
             container.className = "directory-on";
             container.innerHTML = '<span>Root</span>';
             list.appendChild(container);
@@ -122,6 +125,7 @@ function get_list_directory() {
             for (i=0; i<arrayCatalog.length; i++){
                 var container = document.createElement('div');
                 container.setAttribute('onclick', 'loadCatalog(this, '+arrayCatalog[i].id_catalog+')');
+                container.setAttribute('id', arrayCatalog[i].name);
                 container.className = "directory-link";
                 container.innerHTML = '<span>'+arrayCatalog[i].name+'</span>';
                 list.appendChild(container);
@@ -146,6 +150,7 @@ function loadCatalog(elm, num){
     get_directory(num);
     clear();
     elm.className = "directory-on";
+    this_catalog = elm.id;
 }
 
 function clear(){
