@@ -154,6 +154,18 @@ a{
     padding: 10px;
 }
 
+.li_nav_dec{
+    list-style-type: none;
+    display: inline; /* Отображать как строчный элемент */
+    cursor: default;
+    margin-left: 5px; /* Отступ слева */
+    padding: 3px; /* Поля вокруг текста */
+    background:rgb(236, 236, 236);
+    color: rgb(200,200,200);
+    float:left;
+    padding: 10px;
+}
+
 .li_nav:hover{
     background: rgb(108, 178, 228);
     color: white;

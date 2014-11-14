@@ -2,6 +2,9 @@
  * Created by Frostix on 27.10.2014.
  */
 var id_catalog;
+var root;
+
+
 
 window.onload = function () {
     get_list_directory();
@@ -61,6 +64,12 @@ function get_directory(id_directory) {
             var arrayCatalog = JSON.parse(xhr.responseText).data_catalog;
             var arrayAlgorithms = JSON.parse(xhr.responseText).data_algorithms;
 
+            if (id_directory == root) {
+                navication_active();
+            }else{
+                navication_deactive();
+            }
+
             var list = document.getElementById('catalog');
             list.innerHTML = "";
             for (var i=0; i<arrayCatalog.length; i++){
@@ -102,6 +111,8 @@ function get_list_directory() {
             var list = document.getElementById('list_catalog');
             list.innerHTML = "<a id='update' href='#' onclick='get_list_directory()'>Обновить</a><br><br>";
 
+            root = id_catalog;
+
             var container = document.createElement('div');
             container.setAttribute('onclick', 'loadCatalog(this, '+id_catalog+')');
             container.className = "directory-on";
@@ -116,7 +127,7 @@ function get_list_directory() {
                 list.appendChild(container);
             }
             get_directory(id_catalog);
-        } else {
+         } else {
             handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
         }
     };
@@ -147,9 +158,51 @@ function clear(){
 function win1(){
     document.location.href = "#win1";
 }
+
 function win2(){
     document.location.href = "#win2";
 }
+
 function win3(){
     document.location.href = "#win3";
+}
+
+function navication_active(){
+    var list = document.getElementsByClassName('nav_ul');
+    list[0].innerHTML = "";
+    var container = document.createElement('li');
+    container.setAttribute('onclick', 'win1()');
+    container.className = "li_nav";
+    container.innerHTML = '<span>Создать алгоритм</span>';
+    list[0].appendChild(container);
+    var container = document.createElement('li');
+    container.setAttribute('onclick', 'win2()');
+    container.className = "li_nav";
+    container.innerHTML = '<span>Создать каталог</span>';
+    list[0].appendChild(container);
+    var container = document.createElement('li');
+    container.setAttribute('onclick', 'win3()');
+    container.className = "li_nav";
+    container.innerHTML = '<span>Права доступа к каталогу</span>';
+    list[0].appendChild(container);
+}
+
+function navication_deactive(){
+    var list = document.getElementsByClassName('nav_ul');
+    list[0].innerHTML = "";
+    var container = document.createElement('li');
+    container.setAttribute('onclick', '');
+    container.className = "li_nav_dec";
+    container.innerHTML = '<span>Создать алгоритм</span>';
+    list[0].appendChild(container);
+    var container = document.createElement('li');
+    container.setAttribute('onclick', '');
+    container.className = "li_nav_dec";
+    container.innerHTML = '<span>Создать каталог</span>';
+    list[0].appendChild(container);
+    var container = document.createElement('li');
+    container.setAttribute('onclick', 'win3()');
+    container.className = "li_nav_dec";
+    container.innerHTML = '<span>Права доступа к каталогу</span>';
+    list[0].appendChild(container);
 }
