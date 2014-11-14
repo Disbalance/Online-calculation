@@ -201,7 +201,7 @@ function navication_deactive(){
     container.innerHTML = '<span>Создать каталог</span>';
     list[0].appendChild(container);
     var container = document.createElement('li');
-    container.setAttribute('onclick', 'win3()');
+    container.setAttribute('onclick', '');
     container.className = "li_nav_dec";
     container.innerHTML = '<span>Права доступа к каталогу</span>';
     list[0].appendChild(container);
