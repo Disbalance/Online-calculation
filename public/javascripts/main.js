@@ -144,6 +144,7 @@ function get_list_directory() {
 
 function refresh(){
     get_directory(id_catalog);
+    alert(id_catalog);
 }
 
 function loadCatalog(elm, num){
@@ -160,6 +161,40 @@ function clear(){
     }
 }
 
+function getListAccessUser() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/get_list_access_users", true);
+    xhr.send(JSON.stringify({id_catalog: id_catalog}));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState != 4) return;
+        clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+        if (xhr.status == 200) {// Все ок
+            var arrayUsers = JSON.parse(xhr.responseText).arrayUsers;
+            console.log(arrayUsers);
+            var list = document.getElementsByClassName('ul_list_user');
+            list[0].innerHTML = "";
+
+             for (i=0; i<arrayUsers.length; i++){
+             var container = document.createElement('li');
+             container.className = "li_list_user";
+             container.innerHTML = '<span>'+arrayUsers[i].user+'</span>'+'<span class="del_user">x</span>';
+             list[0].appendChild(container);
+             }
+             get_directory(id_catalog);
+             } else {
+             handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+             }
+             };
+            xhr.send(JSON.stringify({}));
+            var timeout = setTimeout(function () {
+                xhr.abort();
+                handleError("Time over")
+            }, 15000);  // Таймаут 15 секунд
+            function handleError(message) {
+                alert("Ошибка: " + message);
+            }
+}
+
 function win1(){
     document.location.href = "#win1";
 }
@@ -170,6 +205,7 @@ function win2(){
 
 function win3(){
     document.location.href = "#win3";
+    getListAccessUser();
 }
 
 function navication_active(){

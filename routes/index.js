@@ -200,5 +200,36 @@ router.post('/addCatalog', function(req,res,next) {
         });
 });
 
+router.post('/get_list_access_users', function(req,res,next){
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+            try {
+                body = JSON.parse(body);
+                console.log(body.id_catalog);
+                var eventGetListAccessUsers = new events.EventEmitter();
+                eventGetListAccessUsers.on( "ok", function(arrayUsers){
+                    console.log('Список пользователей успешно отправлен клиенту');
+                    res.statusCode = 200;
+                    res.end(JSON.stringify({arrayUsers: arrayUsers}));
+                });
+                eventGetListAccessUsers.on( "error", function(){
+                    console.log('Список пользователей не отправлен клиенту из-за ошибки');
+                    res.statusCode = 200;
+                    res.end("error_list");
+                });
+
+                databaseUser.getListAccessUsers(body.id_catalog, eventGetListAccessUsers);
+
+            } catch (e){
+                var err = new Error('Post Error');
+                console.error('Error - Post ');
+                err.status = 500;
+                next(err);
+            }
+        })
+});
 
 module.exports = router;
