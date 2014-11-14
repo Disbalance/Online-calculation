@@ -137,7 +137,7 @@ router.post('/get_list_catalog', function(req, res, next) {
                 eventGetListCatalog.on("ok", function(root,arrayCatalog){
                     console.log('Список каталогов успешно отправлен клиенту');
                     res.statusCode = 200;
-                    res.end("list_catalog");
+                    res.end(JSON.stringify({root: root, arrayCatalog: arrayCatalog}));
                 });
                 eventGetListCatalog.on("error", function(){
                     console.log('Список каталогов не отправлен клиенту из-за ошибки');

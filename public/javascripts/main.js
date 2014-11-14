@@ -4,7 +4,7 @@
 var id_catalog;
 
 window.onload = function () {
-    get_directory(1);
+    get_list_directory();
 };
 
 function add_alghoritm(){
@@ -47,10 +47,6 @@ function add_catalog(){
     };
 }
 
-function test_catalog( id ){
-    alert("Test catalog "+id);
-}
-
 function test_alg( id ){
     alert("Test alg "+id);
 }
@@ -83,6 +79,7 @@ function get_directory(id_directory) {
                 list.appendChild(container);
             }
             id_catalog = id_directory;
+
         } else {
             handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
         }
@@ -100,7 +97,25 @@ function get_list_directory() {
         if (xhr.readyState != 4) return;
         clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
         if (xhr.status == 200) {// Все ок
-            alert(xhr.responseText);
+            id_catalog = JSON.parse(xhr.responseText).root;
+            var arrayCatalog = JSON.parse(xhr.responseText).arrayCatalog;
+            var list = document.getElementById('list_catalog');
+            list.innerHTML = "<a id='update' href='#' onclick='get_list_directory()'>Обновить</a><br><br>";
+
+            var container = document.createElement('div');
+            container.setAttribute('onclick', 'loadCatalog(this, '+id_catalog+')');
+            container.className = "directory-on";
+            container.innerHTML = '<span>Root</span>';
+            list.appendChild(container);
+
+            for (i=0; i<arrayCatalog.length; i++){
+                var container = document.createElement('div');
+                container.setAttribute('onclick', 'loadCatalog(this, '+arrayCatalog[i].id_catalog+')');
+                container.className = "directory-link";
+                container.innerHTML = '<span>'+arrayCatalog[i].name+'</span>';
+                list.appendChild(container);
+            }
+            get_directory(id_catalog);
         } else {
             handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
         }
@@ -112,7 +127,11 @@ function get_list_directory() {
     }
 }
 
-function test(elm, num){
+function refresh(){
+    get_directory(id_catalog);
+}
+
+function loadCatalog(elm, num){
     get_directory(num);
     clear();
     elm.className = "directory-on";
