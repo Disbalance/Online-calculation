@@ -170,7 +170,6 @@ function getListAccessUser() {
         clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
         if (xhr.status == 200) {// Все ок
             var arrayUsers = JSON.parse(xhr.responseText).arrayUsers;
-            console.log(arrayUsers);
             var list = document.getElementsByClassName('ul_list_user');
             list[0].innerHTML = "";
 
@@ -193,6 +192,38 @@ function getListAccessUser() {
             function handleError(message) {
                 alert("Ошибка: " + message);
             }
+    }
+
+function addUserAccess() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/add_access_user", true);
+    var name = document.getElementById("nameUser").value;
+    if (name == '') {
+        alert("Заполните поле 'Имя пользователя'");
+        return;
+    }
+    xhr.send(JSON.stringify({name: name, id_catalog: id_catalog}));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+            } else {
+                if (xhr.status == 205) {
+                    alert('Ошибка добавления доступа пользователю ' + name + '. Проверьте имя или доступ уже открыт ранее.');
+                } else {
+                    handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+                }
+            }
+        }
+        getListAccessUser();
+    }
+        xhr.send(JSON.stringify({}));
+        var timeout = setTimeout(function () {
+            xhr.abort();
+            handleError("Time over")
+        }, 15000);  // Таймаут 15 секунд
+        function handleError(message) {
+            alert("Ошибка: " + message);
+        }
 }
 
 function win1(){

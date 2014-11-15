@@ -232,4 +232,35 @@ router.post('/get_list_access_users', function(req,res,next){
         })
 });
 
+router.post('/add_access_user', function (req, res, next){
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+            try {
+                body = JSON.parse(body);
+                var data = {name:body.name, id_catalog: body.id_catalog, id_call: req.session.id_user};
+                var eventAddAccessUser = new events.EventEmitter();
+                eventAddAccessUser.on( "ok", function(){
+                    console.log('Пользователю '+data.name+' успешно открыт доступ к каталогу');
+                    res.statusCode = 200;
+                    res.end("ok");
+                });
+                eventAddAccessUser.on( "error", function(){
+                    console.log('Пользователю '+data.name+'  не открыт доступ к каталогу из-за ошибки');
+                    res.statusCode = 205;
+                    res.end("ok");
+                });
+
+                databaseUser.addAccessUser(data, eventAddAccessUser);
+
+            } catch (e){
+                var err = new Error('Post Error');
+                console.error('Error - Post ');
+                err.status = 500;
+                next(err);
+            }
+        })
+});
 module.exports = router;
