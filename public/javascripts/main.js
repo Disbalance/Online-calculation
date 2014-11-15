@@ -161,6 +161,29 @@ function clear(){
     }
 }
 
+function deleteAccessUser(elm){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/delete_access_user", true);
+    xhr.send(JSON.stringify({name: elm.id, id_catalog: id_catalog}));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+            } else{
+                handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+            }
+        }
+        getListAccessUser();
+    };
+    xhr.send(JSON.stringify({}));
+    var timeout = setTimeout(function () {
+        xhr.abort();
+        handleError("Time over")
+    }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: " + message);
+    }
+}
+
 function getListAccessUser() {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/get_list_access_users", true);
@@ -176,7 +199,7 @@ function getListAccessUser() {
              for (i=0; i<arrayUsers.length; i++){
              var container = document.createElement('li');
              container.className = "li_list_user";
-             container.innerHTML = '<span>'+arrayUsers[i].user+'</span>'+'<span class="del_user">x</span>';
+             container.innerHTML = '<span>'+arrayUsers[i].user+'</span>'+'<span id='+arrayUsers[i].user+' onclick=deleteAccessUser(this) class="del_user">x</span>';
              list[0].appendChild(container);
              }
              get_directory(id_catalog);
@@ -208,14 +231,14 @@ function addUserAccess() {
             if (xhr.status == 200) {
             } else {
                 if (xhr.status == 205) {
-                    alert('Ошибка добавления доступа пользователю ' + name + '. Проверьте имя или доступ уже открыт ранее.');
+                    alert('Ошибка добавления доступа пользователю ' + name + '. Проверьте имя или доступ уже был открыт ранее.');
                 } else {
                     handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
                 }
             }
         }
         getListAccessUser();
-    }
+    };
         xhr.send(JSON.stringify({}));
         var timeout = setTimeout(function () {
             xhr.abort();
@@ -225,6 +248,7 @@ function addUserAccess() {
             alert("Ошибка: " + message);
         }
 }
+
 
 function win1(){
     document.location.href = "#win1";

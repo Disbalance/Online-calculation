@@ -263,4 +263,37 @@ router.post('/add_access_user', function (req, res, next){
             }
         })
 });
+
+router.post('/delete_access_user', function (req, res, next){
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+            try {
+                body = JSON.parse(body);
+                var data = {name:body.name, id_catalog: body.id_catalog};
+                var eventDeleteAccessUser = new events.EventEmitter();
+                eventDeleteAccessUser.on( "ok", function(){
+                    console.log('Пользователю '+data.name+' успешно снят доступ к каталогу');
+                    res.statusCode = 200;
+                    res.end("ok");
+                });
+                eventDeleteAccessUser.on( "error", function(){
+                    console.log('Пользователю '+data.name+'  не снят доступ к каталогу из-за ошибки');
+                    res.statusCode = 200;
+                    res.end("ok");
+                });
+
+                databaseUser.deleteAccessUser(data, eventDeleteAccessUser);
+
+            } catch (e){
+                var err = new Error('Post Error');
+                console.error('Error - Post ');
+                err.status = 500;
+                next(err);
+            }
+        })
+});
+
 module.exports = router;
