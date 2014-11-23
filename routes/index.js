@@ -296,4 +296,35 @@ router.post('/delete_access_user', function (req, res, next){
         })
 });
 
+router.post('/back_catalog', function (req, res, next){
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+            try {
+                body = JSON.parse(body);
+                var eventBackCatalog = new events.EventEmitter();
+                eventBackCatalog.on( "ok", function(pred_catalog){
+                    console.log('Пользователь перешёл в родительский каталог');
+                    res.statusCode = 200;
+                    res.end(JSON.stringify({pred_catalog: pred_catalog}));
+                });
+                eventBackCatalog.on( "error", function(){
+                    console.log('Пользователь не перешёл в каталог '+pred_catalog+' из-за ошибки');
+                    res.statusCode = 400;
+                    res.end("error");
+                });
+
+                databaseUser.getBackCatalog(body.id_catalog, eventBackCatalog);
+
+            } catch (e){
+                var err = new Error('Post Error');
+                console.error('Error - Post ');
+                err.status = 500;
+                next(err);
+            }
+        })
+});
+
 module.exports = router;

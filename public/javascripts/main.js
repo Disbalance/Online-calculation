@@ -21,6 +21,7 @@ function add_alghoritm(){
     xhr.send(JSON.stringify({nameAlghoritm: nameAlghoritm, id_catalog:id_catalog}));
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
+            clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
             if (xhr.status == 200) {
                 get_directory(id_catalog);
                 document.location.href = location.href='#close';
@@ -28,6 +29,10 @@ function add_alghoritm(){
             }
         }
     };
+    var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: "+message);
+    }
 };
 
 function add_catalog(){
@@ -41,6 +46,7 @@ function add_catalog(){
     xhr.send(JSON.stringify({nameCatalog: nameCatalog, id_pred:id_catalog}));
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
+            clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
             if (xhr.status == 200) {
                 get_directory(id_catalog);
                 document.location.href = location.href='#close';
@@ -48,6 +54,10 @@ function add_catalog(){
             }
         }
     };
+    var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: "+message);
+    }
 }
 
 function test_alg( id ){
@@ -80,7 +90,7 @@ function get_directory(id_directory) {
                 var container = document.createElement('div');
                 container.setAttribute('onclick', 'get_directory('+arrayCatalog[i].id+')');
                 container.className = "catalog";
-                container.innerHTML = '<span>'+arrayCatalog[i].name+'</span>';
+                container.innerHTML = '<img src="/images/catalog.png" width="64" height="64"/><span>'+arrayCatalog[i].name+'</span>';
                 list.appendChild(container);
             }
 
@@ -88,7 +98,7 @@ function get_directory(id_directory) {
                 var container = document.createElement('div');
                 container.setAttribute('onclick', 'test_alg('+arrayAlgorithms[i].id+')');
                 container.className = "algorithms";
-                container.innerHTML = '<span>'+arrayAlgorithms[i].name+'</span>';
+                container.innerHTML = '<img src="/images/file.png" width="54" height="64"/><span>'+arrayAlgorithms[i].name+'</span>';
                 list.appendChild(container);
             }
             id_catalog = id_directory;
@@ -144,7 +154,6 @@ function get_list_directory() {
 
 function refresh(){
     get_directory(id_catalog);
-    alert(id_catalog);
 }
 
 function loadCatalog(elm, num){
@@ -166,6 +175,7 @@ function deleteAccessUser(elm){
     xhr.open("POST", "/delete_access_user", true);
     xhr.send(JSON.stringify({name: elm.id, id_catalog: id_catalog}));
     xhr.onreadystatechange = function () {
+        clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
         if (xhr.readyState == 4) {
             if (xhr.status == 200) {
             } else{
@@ -174,7 +184,6 @@ function deleteAccessUser(elm){
         }
         getListAccessUser();
     };
-    xhr.send(JSON.stringify({}));
     var timeout = setTimeout(function () {
         xhr.abort();
         handleError("Time over")
@@ -207,7 +216,6 @@ function getListAccessUser() {
              handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
              }
              };
-            xhr.send(JSON.stringify({}));
             var timeout = setTimeout(function () {
                 xhr.abort();
                 handleError("Time over")
@@ -228,6 +236,7 @@ function addUserAccess() {
     xhr.send(JSON.stringify({name: name, id_catalog: id_catalog}));
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
+            clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
             if (xhr.status == 200) {
             } else {
                 if (xhr.status == 205) {
@@ -239,7 +248,6 @@ function addUserAccess() {
         }
         getListAccessUser();
     };
-        xhr.send(JSON.stringify({}));
         var timeout = setTimeout(function () {
             xhr.abort();
             handleError("Time over")
@@ -302,3 +310,29 @@ function navication_deactive(){
     container.innerHTML = '<span>Права доступа к каталогу</span>';
     list[0].appendChild(container);
 }
+
+function back(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/back_catalog", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+            if (xhr.status == 200) {
+                var pred_catalog = JSON.parse(xhr.responseText).pred_catalog;
+                if (pred_catalog !=0){
+                    get_directory(pred_catalog);
+                }
+            } else{
+                handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+            }
+        }
+    };
+    xhr.send(JSON.stringify({id_catalog: id_catalog}));
+    var timeout = setTimeout(function () {
+        xhr.abort();
+        handleError("Time over")
+    }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: " + message);
+    }
+};

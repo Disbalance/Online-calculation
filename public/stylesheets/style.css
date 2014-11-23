@@ -211,8 +211,24 @@ a{
     cursor: pointer;
 }
 
+
+.directory .catalog img{
+    margin: 0 auto;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    display: block;
+}
+
+.directory .algorithms img{
+    margin: 0 auto;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    display: block;
+}
+
+
 .directory .catalog:hover{
-    background: rgb(108, 178, 208);
+    background: rgb(134, 195, 225);
 }
 
 .directory .algorithms{
@@ -222,13 +238,13 @@ a{
     height: 120px;
     width: 120px;
     text-align:center;
-    background: rgb(131, 188, 228);
+    background: rgb(131, 188, 208);
     color: white;
     cursor: pointer;
 }
 
 .directory .algorithms:hover{
-    background: rgb(108, 178, 228);
+    background: rgb(134, 195, 225);
 }
 
 /* Базовые стили затемнения и модального окна */
