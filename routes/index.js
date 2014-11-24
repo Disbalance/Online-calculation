@@ -327,4 +327,37 @@ router.post('/back_catalog', function (req, res, next){
         })
 });
 
+
+router.post('/saveAlghoritm', function(req, res,next){
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+            try {
+                body = JSON.parse(body);
+                console.log(body);
+                var eventSaveAlghoritm = new events.EventEmitter();
+                eventSaveAlghoritm.on( "ok", function(){
+                    console.log('Алгоритм  сохранен');
+                    res.statusCode = 200;
+                    res.end("ok");
+                });
+                eventSaveAlghoritm.on( "error", function(){
+                    console.log('Алгоритм не сохранен');
+                    res.statusCode = 400;
+                    res.end("error");
+                });
+
+                databaseUser.saveAlghoritm(body, eventSaveAlghoritm);
+
+            } catch (e){
+                var err = new Error('Post Error');
+                console.error('Error - Post ');
+                err.status = 500;
+                next(err);
+            }
+        })
+});
+
 module.exports = router;

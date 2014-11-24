@@ -60,8 +60,39 @@ function add_catalog(){
     }
 }
 
-function test_alg( id ){
-    alert("Test alg "+id);
+function saveAlghoritm(){
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/saveAlghoritm', true);
+    var formula = document.getElementById("formula").value;
+    var list_indetificators = document.getElementById("enter_value").value;
+    if (formula == '') {
+        alert("Заполните поле");
+        return;
+    }
+    if (list_indetificators == '') {
+        alert("Заполните поле");
+        return;
+    }
+    xhr.send(JSON.stringify({formula: formula, list_indetificators:list_indetificators}));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+            if (xhr.status == 200) {
+                get_directory(id_catalog);
+                document.location.href = location.href='/';
+                document.getElementById("formula").value = "";
+                document.getElementById("list_indetificators").value = "";
+            }
+        }
+    };
+    var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: "+message);
+    }
+}
+
+function alghoritm( id ){
+    document.location.href = '#win4';
 }
 
 function check_nav(){
@@ -96,7 +127,7 @@ function get_directory(id_directory) {
 
             for (var i=0; i<arrayAlgorithms.length; i++){
                 var container = document.createElement('div');
-                container.setAttribute('onclick', 'test_alg('+arrayAlgorithms[i].id+')');
+                container.setAttribute('onclick', 'alghoritm('+arrayAlgorithms[i].id+')');
                 container.className = "algorithms";
                 container.innerHTML = '<img src="/images/file.png" width="54" height="64"/><span>'+arrayAlgorithms[i].name+'</span>';
                 list.appendChild(container);
