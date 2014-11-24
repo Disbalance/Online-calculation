@@ -3,7 +3,7 @@
  */
 var id_catalog;
 var this_catalog;
-
+var id_alg;
 
 
 window.onload = function () {
@@ -73,15 +73,15 @@ function saveAlghoritm(){
         alert("Заполните поле");
         return;
     }
-    xhr.send(JSON.stringify({formula: formula, list_indetificators:list_indetificators}));
+    xhr.send(JSON.stringify({id_alghoritm:id_alg, formula: formula, list_indetificators:list_indetificators}));
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
             if (xhr.status == 200) {
                 get_directory(id_catalog);
-                document.location.href = location.href='/';
+                document.location.href = location.href='/#close';
                 document.getElementById("formula").value = "";
-                document.getElementById("list_indetificators").value = "";
+                document.getElementById("enter_value").value = "";
             }
         }
     };
@@ -91,8 +91,62 @@ function saveAlghoritm(){
     }
 }
 
+function deleteAlghoritm(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/deleteAlghoritm", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+                if (xhr.status == 200) {
+                    document.location.href ="#close";
+                    get_directory(id_catalog);
+
+                } else{
+                    handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+                }
+            }
+        };
+        xhr.send(JSON.stringify({id_alghoritm: id_alg}));
+        var timeout = setTimeout(function () {
+            xhr.abort();
+            handleError("Time over")
+        }, 15000);  // Таймаут 15 секунд
+        function handleError(message) {
+            alert("Ошибка: " + message);
+        }
+    }
+
+
+function getDataAlghoritm(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/getDataAlghoritm", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+            if (xhr.status == 200) {
+                var list_inditificatiors = JSON.parse(xhr.responseText).list_indetificators;
+                var formula = JSON.parse(xhr.responseText).formula;
+                document.getElementById("enter_value").value = list_inditificatiors;
+                document.getElementById("formula").value = formula;
+            } else{
+                handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+            }
+        }
+    };
+    xhr.send(JSON.stringify({id_alghoritm: id_alg}));
+    var timeout = setTimeout(function () {
+        xhr.abort();
+        handleError("Time over")
+    }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: " + message);
+    }
+}
+
 function alghoritm( id ){
+    id_alg = id;
     document.location.href = '#win4';
+    getDataAlghoritm();
 }
 
 function check_nav(){
@@ -367,3 +421,4 @@ function back(){
         alert("Ошибка: " + message);
     }
 };
+
