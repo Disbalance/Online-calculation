@@ -149,8 +149,6 @@ function getDataAlghoritm(){
                 var formula = JSON.parse(xhr.responseText).formula;
                 document.getElementById("enter_value").value = list_inditificatiors;
                 document.getElementById("formula").value = formula;
-
-                //Отрисовка всех переменных в виде таблицы  с заполением данных + формула и отправка на парсер и расчет.
             } else{
                 handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
             }
@@ -456,7 +454,7 @@ function getIdenteficators() {
             var formula = JSON.parse(xhr.responseText).formula;
             var arrayIdentificators = JSON.parse(xhr.responseText).arrayIdentificators;
 
-
+            //Отрисовка всех переменных в виде таблицы  с заполением данных + формула и отправка на парсер и расчет.
         } else {
             handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
         }
