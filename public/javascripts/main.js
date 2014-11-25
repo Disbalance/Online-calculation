@@ -77,11 +77,11 @@ function check_identificators(list_identificators){
     return false;
 }
 
-function saveAlghoritm(){
+function saveAlghoritm(num){
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/saveAlghoritm', true);
-    var formula = document.getElementById("formula").value;
-    var list_indetificators = document.getElementById("enter_value").value;
+    var formula = document.getElementById("formula1").value;
+    var list_indetificators = document.getElementById("enter_value1").value;
     if (formula == '') {
         alert("Заполните поле");
         return;
@@ -94,7 +94,7 @@ function saveAlghoritm(){
         alert("Присутвтвуют одинаковые переменные");
         return;
     }
-    xhr.send(JSON.stringify({id_alghoritm:id_alg, formula: formula, list_indetificators:list_indetificators}));
+    xhr.send(JSON.stringify({id_alghoritm:id_alg, formula: kill_space(formula), list_indetificators:kill_space(list_indetificators)}));
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
@@ -135,7 +135,7 @@ function deleteAlghoritm(){
     }
 
 
-function getDataAlghoritm(){
+function getDataAlghoritm(num){
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/getDataAlghoritm", true);
     xhr.onreadystatechange = function () {
@@ -144,8 +144,8 @@ function getDataAlghoritm(){
             if (xhr.status == 200) {
                 var list_inditificatiors = JSON.parse(xhr.responseText).list_indetificators;
                 var formula = JSON.parse(xhr.responseText).formula;
-                document.getElementById("enter_value").value = list_inditificatiors;
-                document.getElementById("formula").value = formula;
+                document.getElementById("enter_value"+num).value = list_inditificatiors;
+                document.getElementById("formula"+num).value = formula;
             } else{
                 handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
             }
@@ -163,8 +163,14 @@ function getDataAlghoritm(){
 
 function alghoritm( id ){
     id_alg = id;
-    document.location.href = '#win4';
-    getDataAlghoritm();
+    if (this_catalog == 'Root') {
+        document.location.href = '#win4';
+        getDataAlghoritm(1);
+    }else{
+        document.location.href = '#win5';
+        getDataAlghoritm(2);
+    }
+
 }
 
 function check_nav(){
@@ -441,27 +447,16 @@ function back(){
     }
 };
 
-function getIdenteficators() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/get_idetificators", true);
-    xhr.onreadystatechange=function(){
-        if (xhr.readyState != 4) return;
-        clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
-        if (xhr.status == 200) {// Все ок
-            var formula = JSON.parse(xhr.responseText).formula;
-            var arrayIdentificators = JSON.parse(xhr.responseText).arrayIdentificators;
-
-            //Отрисовка всех переменных в виде таблицы  с заполением данных + формула и отправка на парсер и расчет.
-        } else {
-            handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+function kill_space(str){
+    var newstr = "";
+    for(i=0;i<str.length;i++){
+        if(str[i]!= ' '){
+            newstr=newstr+str[i];
         }
-    };
-    xhr.send(JSON.stringify({id_alghoritm: id_alg}));
-    var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
-    function handleError(message) {
-        alert("Ошибка: "+message);
     }
+    return newstr;
 }
+
 function parser(list,formula){
     var temp = "";
     var newformula = "";
@@ -492,12 +487,17 @@ function parser(list,formula){
 }
 
 
-function calculate(){
-    saveAlghoritm();
+function calculate(num){
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/calculate', true);
-    var formula = document.getElementById("formula").value+'=';
-    var list_indetificators = document.getElementById("enter_value").value;
+    if (num == 1){
+        var formula = document.getElementById("formula1").value+'=';
+        var list_indetificators = document.getElementById("enter_value1").value;
+    }else{
+        var formula = document.getElementById("formula2").value+'=';
+        var list_indetificators = document.getElementById("enter_value2").value;
+    }
+
     if (formula == '') {
         alert("Заполните поле");
         return;
@@ -510,7 +510,7 @@ function calculate(){
         alert("Присутвтвуют одинаковые переменные");
         return;
     }
-    xhr.send(JSON.stringify({formula: parser(list_indetificators, formula)}));
+    xhr.send(JSON.stringify({formula: parser(kill_space(list_indetificators), kill_space(formula))}));
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             clearTimeout(timeout); // очистить таймаут при наступлении readyState 4

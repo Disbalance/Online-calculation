@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script type="text/javascript" src="javascripts/main.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+   <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
 </head>
 
 <body>
@@ -84,14 +84,26 @@
         <a href="#close" title="Закрыть" class="close">X</a>
         <h3>Работа с алгоритмом</h3>
         <div class="model_algorithms">
-           <!-- <a onclick=getIdenteficators()>Список переменных</a>-->
-            <a onclick="calculate()">Вычислить выражение</a>
+            <a onclick="calculate(1)">Вычислить выражение</a>
             <a onclick=deleteAlghoritm()>Удалить алгоритм</a>
             <p>Входные данные:</p>
-            <input id = "enter_value" type="text" style="width: 330px" placeholder="Пример: x=1,y=5,z=-2,x1=-6,x2=-1"/>
+            <input id = "enter_value1" type="text" style="width: 330px" placeholder="Пример: x=1,y=5,z=-2,x1=-6,x2=-1"/>
             <p>Математическое выражение:</p>
-            <textarea id = "formula" type="text" style="width: 330px; height: 100px;" placeholder="Пример: (x+y)/z"></textarea>
-            <a onclick=saveAlghoritm() style="margin-top: 15px;" class="save">Сохранить</a>
+            <textarea id = "formula1" type="text" style="width: 330px; height: 100px;" placeholder="Пример: (x+y)/z"></textarea>
+            <a onclick=saveAlghoritm(1) style="margin-top: 15px;" class="save">Сохранить</a>
+        </div>
+    </div>
+</div>
+<div id="win5" class="modalbg">
+    <div class="dialog">
+        <a href="#close" title="Закрыть" class="close">X</a>
+        <h3>Работа с алгоритмом</h3>
+        <div class="model_algorithms">
+            <a onclick="calculate(2)">Вычислить выражение</a>
+            <p>Входные данные:</p>
+            <input id = "enter_value2" type="text" style="width: 330px" placeholder="Пример: x=1,y=5,z=-2,x1=-6,x2=-1"/>
+            <p>Математическое выражение:</p>
+            <textarea id = "formula2" type="text" readonly style="width: 330px; height: 100px;" placeholder="Пример: (x+y)/z"></textarea>
         </div>
     </div>
 </div>
