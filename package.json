@@ -12,6 +12,9 @@
     "morgan": "~1.2.3",
     "serve-favicon": "~2.0.1",
     "debug": "~1.0.4",
-    "ejs": "~0.8.5"
+    "ejs": "~0.8.5",
+	"express-mysql-session": "^0.2.0",
+	"express-session": "^1.9.1",
+	"mysql": "^2.3.2"
   }
 }
