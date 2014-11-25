@@ -3,6 +3,7 @@ var events = require('events');
 var databaseUser = require('../lib/database/databaseUser');
 var checkAuth = require('../middleware/checkAuth');
 var crypto = require('crypto');
+var parser = require('../lib/database/algorithms')
 var router = express.Router();
 
 /* GET home page. */
@@ -453,6 +454,18 @@ router.post('/get_idetificators', function (req, res,next){
                 err.status = 500;
                 next(err);
             }
+        })
+});
+
+//Дописать проверку на присутсвия 1 равно в конце + убрать все пробелы.
+router.post('/calculate', function (req, res,next){
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+                body = JSON.parse(body);
+                parser.results(body.formula,res);
         })
 });
 module.exports = router;

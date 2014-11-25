@@ -465,3 +465,28 @@ function getIdenteficators() {
         alert("Ошибка: "+message);
     }
 }
+
+function calculate(){
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/calculate', true);
+    var formula = document.getElementById("formula").value+"=";
+    var list_indetificators = document.getElementById("enter_value").value;
+    if (formula == '') {
+        alert("Заполните поле");
+        return;
+    }
+    xhr.send(JSON.stringify({formula: formula}));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+            if (xhr.status == 200) {
+                var result =  JSON.parse(xhr.responseText).result;
+                alert(result);
+            }
+        }
+    };
+    var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: "+message);
+    }
+}
