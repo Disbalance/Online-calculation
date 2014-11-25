@@ -28,6 +28,8 @@ function add_alghoritm(){
                 get_directory(id_catalog);
                 document.location.href = location.href='#close';
                 document.getElementById("nameAlghoritm").value = "";
+            }else{
+               alert(JSON.parse(xhr.responseText).result);
             }
         }
     };
@@ -53,7 +55,10 @@ function add_catalog(){
                 get_directory(id_catalog);
                 document.location.href = location.href='#close';
                 document.getElementById("nameCatalog").value = "";
+            }else{
+                alert(JSON.parse(xhr.responseText).result);
             }
+
         }
     };
     var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
@@ -469,8 +474,8 @@ function parser(list,formula){
 
 
     for(i=0;i<formula.length;i++){
-      if(formula[i]=='+' || formula[i]=='-' || formula[i]=='*' || formula[i]=='/' || formula[i]=='(' || formula[i]==')' || formula[i]=='='){
-          for(j=0;j<arrayList.length;j++){
+              if(formula[i]=='+' || formula[i]=='-' || formula[i]=='*' || formula[i]=='/' || formula[i]=='(' || formula[i]==')' || formula[i]=='='){
+                  for(j=0;j<arrayList.length;j++){
               if(temp == arrayList[j][0]){
                   newformula =  newformula+arrayList[j][1];
                   break;

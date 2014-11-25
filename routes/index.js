@@ -171,8 +171,8 @@ router.post('/addAlghoritm', function(req,res,next) {
             });
             eventAddAlghoritm.on("error",function(){
                 console.log('Алгоритм'+' '+data.name+' '+'не добавлен в базу данных из-за ошибки');
-                res.statusCode = 405;
-                res.end("ok");
+                res.statusCode = 406;
+                res.end(JSON.stringify({result:"Данный алгоритм уже существует"}));
             });
             databaseUser.addAlghoritm(data, eventAddAlghoritm);
         });
@@ -185,6 +185,7 @@ router.post('/addCatalog', function(req,res,next) {
     })
         .on('end', function () {
             body = JSON.parse(body);
+            console.log(body);
             var data = {name:body.nameCatalog, id_pred:body.id_pred};
             var eventAddCatalog = new events.EventEmitter();
             eventAddCatalog.on("add", function(){
@@ -194,8 +195,8 @@ router.post('/addCatalog', function(req,res,next) {
             });
             eventAddCatalog.on("error",function(){
                 console.log('Каталог'+' '+data.name+' '+'не добавлен в базу данных из-за ошибки');
-                res.statusCode = 405;
-                res.end("ok");
+                res.statusCode = 406;
+                res.end(JSON.stringify({result:"Данный каталог уже существует"}));
             });
             databaseUser.addCatalog(data, eventAddCatalog);
         });

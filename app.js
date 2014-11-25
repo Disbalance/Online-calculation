@@ -17,7 +17,7 @@ var options = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: '00291256',
+    password: '',
     database: 'test'
 
 };
