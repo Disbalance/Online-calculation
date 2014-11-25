@@ -6,9 +6,11 @@ var this_catalog;
 var id_alg;
 
 
+
 window.onload = function () {
     get_list_directory();
 };
+
 
 function add_alghoritm(){
     var xhr = new XMLHttpRequest();
@@ -60,6 +62,21 @@ function add_catalog(){
     }
 }
 
+function check_identificators(list_identificators){
+    var list = list_identificators.split(',');
+    if (list.length == 1){
+        return false;
+    }
+    for(i=0;i<list.length;i++){
+      for(j=i+1; j<list.length;j++){
+          if(list[i]==list[j]){
+              return true;
+          }
+      }
+    }
+    return false;
+}
+
 function saveAlghoritm(){
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/saveAlghoritm', true);
@@ -71,6 +88,10 @@ function saveAlghoritm(){
     }
     if (list_indetificators == '') {
         alert("Заполните поле");
+        return;
+    }
+    if (check_identificators(list_indetificators)){
+        alert("Присутвтвуют одинаковые переменные");
         return;
     }
     xhr.send(JSON.stringify({id_alghoritm:id_alg, formula: formula, list_indetificators:list_indetificators}));
@@ -128,6 +149,8 @@ function getDataAlghoritm(){
                 var formula = JSON.parse(xhr.responseText).formula;
                 document.getElementById("enter_value").value = list_inditificatiors;
                 document.getElementById("formula").value = formula;
+
+                //Отрисовка всех переменных в виде таблицы  с заполением данных + формула и отправка на парсер и расчет.
             } else{
                 handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
             }
@@ -183,6 +206,7 @@ function get_directory(id_directory) {
                 var container = document.createElement('div');
                 container.setAttribute('onclick', 'alghoritm('+arrayAlgorithms[i].id+')');
                 container.className = "algorithms";
+                container.id = "alghoritm";
                 container.innerHTML = '<img src="/images/file.png" width="54" height="64"/><span>'+arrayAlgorithms[i].name+'</span>';
                 list.appendChild(container);
             }
@@ -422,3 +446,24 @@ function back(){
     }
 };
 
+function getIdenteficators() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/get_idetificators", true);
+    xhr.onreadystatechange=function(){
+        if (xhr.readyState != 4) return;
+        clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+        if (xhr.status == 200) {// Все ок
+            var formula = JSON.parse(xhr.responseText).formula;
+            var arrayIdentificators = JSON.parse(xhr.responseText).arrayIdentificators;
+
+
+        } else {
+            handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+        }
+    };
+    xhr.send(JSON.stringify({id_alghoritm: id_alg}));
+    var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: "+message);
+    }
+}

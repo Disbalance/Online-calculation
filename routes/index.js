@@ -424,4 +424,35 @@ router.post('/deleteAlghoritm', function (req,res,next){
             }
         })
 });
+
+router.post('/get_idetificators', function (req, res,next){
+    var body = '';
+    req.on('readable', function(){
+        body += req.read();
+    })
+        .on('end', function(){
+            try {
+                body = JSON.parse(body);
+                var eventGetIdentificators = new events.EventEmitter();
+                eventGetIdentificators.on( "ok", function(arrayIdentificators, formula){
+                    console.log('Алгоритм '+body.id_alghoritm+' успешно удален со своими данными');
+                    res.statusCode = 200;
+                    res.end(JSON.stringify({formula:formula, arrayIdentificators:arrayIdentificators}));
+                });
+                eventGetIdentificators.on( "error", function(){
+                    console.log('Алгоритм '+body.id_alghoritm+'+ и его данные не удалены из-за ошибки');
+                    res.statusCode = 400;
+                    res.end("ok");
+                });
+
+                databaseUser.getIdentificators(body, eventGetIdentificators);
+
+            } catch (e){
+                var err = new Error('Post Error');
+                console.error('Error - Post ');
+                err.status = 500;
+                next(err);
+            }
+        })
+});
 module.exports = router;

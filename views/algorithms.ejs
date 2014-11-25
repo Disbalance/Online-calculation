@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script type="text/javascript" src="javascripts/main.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -79,18 +80,19 @@
 </div>
 
  <div id="win4" class="modalbg">
-        <div class="dialog">
-            <a href="#close" title="Закрыть" class="close">X</a>
-            <h3>Работа с алгоритмом</h3>
-            <div class="model_algorithms">
-                <a onclick=deleteAlghoritm()>Удалить алгоритм</a>
-                <p>Входные данные:</p>
-                <input id = "enter_value" type="text" style="width: 330px" placeholder="Пример: x,y,z,x1,x2"/>
-                <p>Математическое выражение:</p>
-                <textarea id = "formula" type="text" style="width: 330px; height: 100px;" placeholder="Пример: (x+y)*sin(z)"></textarea>
-                <a onclick=saveAlghoritm() style="margin-top: 15px;" class="save">Сохранить</a>
-            </div>
+    <div class="dialog">
+        <a href="#close" title="Закрыть" class="close">X</a>
+        <h3>Работа с алгоритмом</h3>
+        <div class="model_algorithms">
+            <a onclick=getIdenteficators()>Список переменных</a>
+            <a onclick=deleteAlghoritm()>Удалить алгоритм</a>
+            <p>Входные данные:</p>
+            <input id = "enter_value" type="text" style="width: 330px" placeholder="Пример: x,y,z,x1,x2"/>
+            <p>Математическое выражение:</p>
+            <textarea id = "formula" type="text" style="width: 330px; height: 100px;" placeholder="Пример: (x+y)*sin(z)"></textarea>
+            <a onclick=saveAlghoritm() style="margin-top: 15px;" class="save">Сохранить</a>
         </div>
+    </div>
 </div>
 </body>
 </html>
