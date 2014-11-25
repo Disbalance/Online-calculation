@@ -441,6 +441,27 @@ function back(){
     }
 };
 
+function getIdenteficators() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/get_idetificators", true);
+    xhr.onreadystatechange=function(){
+        if (xhr.readyState != 4) return;
+        clearTimeout(timeout); // очистить таймаут при наступлении readyState 4
+        if (xhr.status == 200) {// Все ок
+            var formula = JSON.parse(xhr.responseText).formula;
+            var arrayIdentificators = JSON.parse(xhr.responseText).arrayIdentificators;
+
+            //Отрисовка всех переменных в виде таблицы  с заполением данных + формула и отправка на парсер и расчет.
+        } else {
+            handleError(xhr.statusText); // вызвать обработчик ошибки с текстом ответа
+        }
+    };
+    xhr.send(JSON.stringify({id_alghoritm: id_alg}));
+    var timeout = setTimeout( function(){ xhr.abort(); handleError("Time over") }, 15000);  // Таймаут 15 секунд
+    function handleError(message) {
+        alert("Ошибка: "+message);
+    }
+}
 function parser(list,formula){
     var temp = "";
     var newformula = "";
